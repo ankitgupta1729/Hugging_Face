@@ -1,0 +1,419 @@
+1. NLP is a field of linguistics and machine learning focused on understanding everything related to human language.
+2. The aim of NLP tasks is not only to understand single words individually, but to be able to understand the context of those words.
+3. The following is a list of common NLP tasks, with some examples of each:
+
+Classifying whole sentences: Getting the sentiment of a review, detecting if an email is spam, determining if a sentence is grammatically correct or whether two sentences are logically related or not
+
+Classifying each word in a sentence: Identifying the grammatical components of a sentence (noun, verb, adjective), or the named entities (person, location, organization)
+
+Generating text content: Completing a prompt with auto-generated text, filling in the blanks in a text with masked words
+
+Extracting an answer from a text: Given a question and a context, extracting the answer to the question based on the information provided in the context
+
+Generating a new sentence from an input text: Translating a text into another language, summarizing a text
+
+4. NLP isn’t limited to written text though. It also tackles complex challenges in speech recognition and computer vision, such as generating a transcript of an audio sample or a description of an image.
+
+5. Transformer models are used to solve all kinds of NLP tasks, like the ones mentioned in the previous section.
+
+6. The 🤗 Transformers library(https://github.com/huggingface/transformers) provides the functionality to create and use those shared models. The Model Hub(https://huggingface.co/models) contains thousands of pretrained models that anyone can download and use. You can also upload your own models to the Hub!
+
+⚠️ The Hugging Face Hub is not limited to Transformer models. Anyone can share any kind of models or datasets they want! Create a huggingface.co account to benefit from all available features!
+
+7. Working with pipelines:
+
+The pipeline() function returns an end-to-end object that performs an NLP task on one or several texts. The pipeline also includes all the necessary pre-processing as well as some post-processing to make the output of the 
+model human-readable.
+
+8. Example 1: Sentiment-Analysis pipeline:
+
+The first task we will try the pipeline API on sentiment analysis. It classifies the text as positive or negative.
+
+This pipeline performs the text classification on given input and determines whether it is positive or negative.
+
+You can pass multiple texts to the same pipeline which will be processed and passed through the model together as a batch.
+
+9. The zero-shot classification pipeline is a more general text-classification pipeline. It allows you to provide
+the labels as you want.
+
+10. Next task is text generation pipeline. This pipeline will auto-complete a given prompt.
+    The output is generated with a bit of randomness, so it changes each time you call the generator object.
+    on a given prompt. 
+
+11. The default model in the previous task was: gpt2. You can check various models on https://huggingface.co/models. There are many models are available. Not just in English.
+
+12. distilgpt2 is a lighter version of gpt2 which is created by huggingface.
+
+13. "max_length" parameter is the maximum length of the generated texts.
+
+"num_return_sequences" is the number of sentences we want to return since there is some randomness 
+ in the generation.
+
+14. Generating text by guessing the next word in a sentence was the pretraining
+    objective of GPT-2.
+
+15. "fill-mask" pipeline is the pretraining objective of BERT which is to guess the masked word.
+    
+16. Another task a transformer model can perform is to classify each word in the sentence instead of sentence as a whole.
+
+One example of this is Named Entity Recognition which is the task of identifying entities such as persons, organizations or locations in a sentence.
+
+grouped_entities=True argument used is to make the pipeline group together the different words linked to the same
+entity(such as Hugging and Face here)
+
+17. Another task available with the pipeline API is extracting question answering. Providing a context and question, the model will identify the span of text in the context containing the answer to the question.
+
+18. Getting short summaries of very long articles is also something the Transformers library can help with the
+    summarization pipeline.
+
+19. The last task supported by the pipeline API is translation.
+
+20. The most basic object in the 🤗 Transformers library is the pipeline() function. It connects a model with its necessary preprocessing and postprocessing steps, allowing us to directly input any text and get an intelligible answer.
+
+21. By default, this pipeline selects a particular pretrained model that has been fine-tuned for sentiment analysis in English. The model is downloaded and cached when you create the classifier object. If you rerun the command, the cached model will be used instead and there is no need to download the model again.
+
+22. There are three main steps involved when you pass some text to a pipeline:
+
+The text is preprocessed into a format the model can understand.
+The preprocessed inputs are passed to the model.
+The predictions of the model are post-processed, so you can make sense of them.
+
+23. Some of the currently available pipelines are:
+
+feature-extraction (get the vector representation of a text)
+fill-mask
+ner (named entity recognition)
+question-answering
+sentiment-analysis
+summarization
+text-generation
+translation
+zero-shot-classification
+
+24. Zero-shot classification: This pipeline is called zero-shot because you don’t need to fine-tune the model on your data to use it. It can directly return probability scores for any list of labels you want.
+  
+25. The Inference API
+
+All the models can be tested directly through your browser using the Inference API, which is available on the Hugging Face website. You can play with the model directly on this page by inputting custom text and watching the model process the input data.
+
+The Inference API that powers the widget is also available as a paid product, which comes in handy if you need it for your workflows. See the pricing page for more details.   
+
+-----------------------------------------------------------------------------------------------------------------
+
+26. How do Transformers work?
+
+The Transformer architecture was introduced in June 2017. The focus of the original research was on translation tasks. This was followed by the introduction of several influential models, including:
+
+June 2018: GPT, the first pretrained Transformer model, used for fine-tuning on various NLP tasks and obtained state-of-the-art results
+
+October 2018: BERT, another large pretrained model, this one designed to produce better summaries of sentences (more on this in the next chapter!)
+
+February 2019: GPT-2, an improved (and bigger) version of GPT that was not immediately publicly released due to ethical concerns
+
+October 2019: DistilBERT, a distilled version of BERT that is 60% faster, 40% lighter in memory, and still retains 97% of BERT’s performance
+
+October 2019: BART and T5, two large pretrained models using the same architecture as the original Transformer model (the first to do so)
+
+May 2020, GPT-3, an even bigger version of GPT-2 that is able to perform well on a variety of tasks without the need for fine-tuning (called zero-shot learning)
+
+27.  Broadly, they can be grouped into three categories:
+
+GPT-like (also called auto-regressive Transformer models)
+BERT-like (also called auto-encoding Transformer models)
+BART/T5-like (also called sequence-to-sequence Transformer models)
+
+28. All the Transformer models mentioned above (GPT, BERT, BART, T5, etc.) have been trained as language models. This means they have been trained on large amounts of raw text in a self-supervised fashion. Self-supervised learning is a type of training in which the objective is automatically computed from the inputs of the model. That means that humans are not needed to label the data!
+
+This type of model develops a statistical understanding of the language it has been trained on, but it’s not very useful for specific practical tasks. Because of this, the general pretrained model then goes through a process called transfer learning. During this process, the model is fine-tuned in a supervised way — that is, using human-annotated labels — on a given task.
+
+29. An example of a task is predicting the next word in a sentence having read the n previous words. This is called causal language modeling because the output depends on the past and present inputs, but not the future ones.
+
+e.g.
+
+My --> Name
+My Name --> is
+My Name is --> Sylvain
+My Name is Sylvain --> .
+
+30.
+
+Another example is masked language modeling, in which the model predicts a masked word in the sentence.
+
+e.g. 
+
+My [MASK] is Sylvain.
+
+--> Mask is "Name"
+
+31. Transformers are big models:
+
+Apart from a few outliers (like DistilBERT), the general strategy to achieve better performance is by increasing the models’ sizes as well as the amount of data they are pretrained on.
+
+Unfortunately, training a model, especially a large one, requires a large amount of data. This becomes very costly in terms of time and compute resources.
+
+32. Transfer Learning:
+
+The idea of transfer learning is to leverage the knowledge acquired by a model trained with lots of data on another task. The model A will be trained specifically for task A. Now let's say you want to train a model B for a different task. One option would be to train the model from scratch. This could take lots of computation, time and data. Instead, we could initialize model B with the same weights as model A, transferring the knowledge of model A on
+task B.
+
+So, transfer learning is the act of initializing a model with another model's weights. 
+
+33. When training from scratch, all the model's weights are initialized randomly. In computer vision, transfer learning has been applied successfully for
+almost 10 years. Models are frequently trained on ImageNet, a dataset containing 1.2 million of photo images and each image is classified by one of the 1000
+labels. Training like this on labeled data is called supervised learning. ImageNet is commonly used as a dataset for pretraining models in computer vision.
+
+34. In NLP, transfer learning is a bit more recent. A key difference with ImageNet is that the pretraining is usually self-supervised which means it 
+does not require human annotations for the labels. A very common pretraining objective is to guess the next word in a sentence which requires a lots of text. For instance, GPT-2 was pretrained this way using the content of 45 million links posted by users on reddit.
+
+Another example of self-supervised pretraining objective is to predict the value of randomly masked words which is similar to fill in the blank test as in schools. BERT was pre-trained this way using the English Wikipedia and 11000 unpublished books.
+
+In practice, transfer learning is applied on a given model by throwing away its head i.e. last layer is focused on the pretraining objective and replacing 
+it with a new randomly initialized head suitable for the task at hand. So, transfer learning is applied by dropping the head of pretrained model while
+keeping its body.
+
+For instance, when we fine-tuned a BERT model, we remove the head that classify mask word and replace it with a classifier with two outputs.
+
+To be efficient as possible, the pretrained model should be as similar as similar to the task it's fine-tuned on. For example, if the problem is to classify German sentences, it's best to use a germen pretrained model
+
+35. The pretrained model does not only transfer its knowledge but also any bias it may contain. ImageNet mostly contains images coming from USA and Western
+Europe. So models fine-tuned with it usually will perform better on images from these countries.
+
+OpenAI studied the bias predictions of its GPT-3 model which was trained on guess the next word objective. 
+
+36. This pretraining is usually done on very large amounts of data. Therefore, it requires a very large corpus of data, and training can take up to several weeks. 
+
+Fine-tuning, on the other hand, is the training done after a model has been pretrained. To perform fine-tuning, you first acquire a pretrained language model, then perform additional training with a dataset specific to your task. Wait — why not simply train the model for your final use case from the start (scratch)? There are a couple of reasons:
+
+The pretrained model was already trained on a dataset that has some similarities with the fine-tuning dataset. The fine-tuning process is thus able to take advantage of knowledge acquired by the initial model during pretraining (for instance, with NLP problems, the pretrained model will have some kind of statistical understanding of the language you are using for your task).
+
+Since the pretrained model was already trained on lots of data, the fine-tuning requires way less data to get decent results.
+
+For the same reason, the amount of time and resources needed to get good results are much lower.          
+ 
+For example, one could leverage a pretrained model trained on the English language and then fine-tune it on an arXiv corpus, resulting in a science/research-based model. The fine-tuning will only require a limited amount of data: the knowledge the pretrained model has acquired is “transferred,” hence the term transfer learning.
+
+37. General architecture:
+
+A transformer has 2 pieces: Encoders and Decoders.
+
+They can be used together but they can also be used independently.
+
+Encoders have 2 properties: 1. Bidirectional 2. Self-Attention
+
+Decoders have 2 properties: 1. Masked self-attention 2. Uni-directional 3. Auto-regressive
+
+The combination of the two parts is known as encoder-decoder or a sequence-to-sequence transformer. The encoder accepts inputs and computes a high level representation of those inputs and these outputs are then passed to decoder and decoder uses encoder's outputs alongside with other inputs to generate a
+prediction and then predicts an output which it will re-use in future iterations and hence the term "auto-regressive".
+
+38.
+
+Encoder (left): The encoder receives an input and builds a representation of it (its features). This means that the model is optimized to acquire understanding from the input.
+
+Decoder (right): The decoder uses the encoder’s representation (features) along with other inputs to generate a target sequence. This means that the model is optimized for generating outputs. 
+
+39.
+
+Each of these parts can be used independently, depending on the task:
+
+Encoder-only models: Good for tasks that require understanding of the input, such as sentence classification and named entity recognition.
+
+Decoder-only models: Good for generative tasks such as text generation.
+
+Encoder-decoder models or sequence-to-sequence models: Good for generative tasks that require an input, such as translation or summarization.
+
+The Transformer architecture was originally designed for translation. 
+
+40.
+
+Architectures vs. checkpoints:
+
+
+As we dive into Transformer models in this course, you’ll see mentions of architectures and checkpoints as well as models. These terms all have slightly different meanings:
+
+Architecture: This is the skeleton of the model — the definition of each layer and each operation that happens within the model.
+
+Checkpoints: These are the weights that will be loaded in a given architecture.
+
+Model: This is an umbrella term that isn’t as precise as “architecture” or “checkpoint”: it can mean both. This course will specify architecture or 
+checkpoint when it matters to reduce ambiguity.
+
+For example, BERT is an architecture while bert-base-cased, a set of weights trained by the Google team for the first release of BERT, is a checkpoint. However, one can say “the BERT model” and “the bert-base-cased model.”
+
+41. Encoder Models:
+
+An example of a popular encoder-only architecture is BERT which is the most popular model of its kind. The encoder outputs a numerical representation of each word used as input. This numerical representation is also called as "feature vector" or "feature tensor".
+
+For example: "Welcome to NYC" can be converted to [[1,2,3],[2,3,4],[1,2,3]]. 
+
+So, there is a vector for each word. The dimension of each word is defined by the architecture of the model. For the "base BERT" model, it is 768. These representation contain the value of a word, but contextualized. So, here vector for "to" takes the values from context as "welcome" and "NYC".
+
+This is thanks to the "Self-Attention" mechanism. A self attention mechanism relates to different positions (or different words) in a single sequence,
+in order to compute a representation of that sequence. This means that the resulting representation of a word has been affected by other words in the 
+sequence. 
+
+42. When should one use an encoder ?
+
+Ex: BERT is a most famous transformer model, a standalone encoder model and at the time of release, it beats the state of the art in many sequence classification tasks, question answering tasks and masked language modeling etc. The idea is that encoders are very powerful at extracting vectors that carry meaningful information about a sequence. This vector can then be handled down the road by additional layers of neurons to make sense of them.  
+
+So, it can be used in the following situations:
+
+-- Bidirectional: context from the left, and the right. 
+     
+-- Good at extracting meaningful information.
+
+-- Sequence classification, question answering, masked language modeling etc.
+
+-- NLU: Natural Language Understanding
+
+-- Example of encoders: BERT, RoBERTa, ALBERT etc.
+
+43. Example: Masked Language Modeling
+
+It is guessing a randomly masked word.
+
+e.g. My ??? is Sylvain.
+
+So here ??? can be replaced with "name".
+
+This is one of the objectives for which BERT was trained. It was trained to predict a hidden words in a sequence. Encoders shine in this scenario particularly. Bidirectional information is crucial here.
+
+Encoders with their bidirectional context, are good at guessing words in the middle of a sequence. This requires a semantic as well as syntactic understanding.
+
+44. Encoders are good at sequence classification. Ex. Sentiment Analysis. While the two sequences are very similar, containing the same words, their meaning is entirely different and the encoder model is able to grasp that difference.
+
+45. Encoder models use only the encoder of a Transformer model. At each stage, the attention layers can access all the words in the initial sentence. These models are often characterized as having “bi-directional” attention, and are often called auto-encoding models.
+
+46. The pretraining of these models usually revolves around somehow corrupting a given sentence (for instance, by masking random words in it) and tasking the model with finding or reconstructing the initial sentence.
+
+Encoder models are best suited for tasks requiring an understanding of the full sentence, such as sentence classification, named entity recognition (and more generally word classification), and extractive question answering.
+
+Representatives of this family of models include:
+
+ALBERT
+BERT
+DistilBERT
+ELECTRA
+RoBERTa
+
+47. Decoder models:
+
+An example of a popular decoder-only architecture is GPT-2. Decoder architecture is similar to encoder architecture. One can use a decoder for most of the
+same tasks as an encoder, albeit with, generally a little loss of the performance. Let's take the same approach we have taken with the encoders to try and
+understand the architectural differences between an encoder and a decoder. 
+
+We'll use a small example with three words "Welcome to NYC" and send to decoder, we retrieve a numerical representation of each word. For example,
+passing "Welcome to NYC" to decoder will give sequence of numbers as [[1,2,3],[2,3,4],[1,2,4]]. The decoder outputs exactly one sequence of numbers per 
+input word. The numerical representation can also be called as "Feature Vector" or a "Feature Tensor". Every word contains one vector that was passed through the decoder. Each of these vector is a numerical representation of the word in question. The dimension of this vector is defined by the architecture
+of the model. The decoder differs from the encoder principally with its self-attention mechanism. It's using what is called as "masked self-attention".
+
+For example, if we focus on the word "to", we will see that this vector is absolutely unmodified by the "NYC" word. That's because all the words on the right (also known as right context) of the word is masked. Rather than benefitting from all the words on the left and right i.e. bidirectional context,
+decoders only have access to the words on the left. The masked self-attention layer hides the values of the context on the right.
+
+The masked self-attention mechanism differs from the self-attention mechanism by using an additional mask to hide the context on either side of the word.
+The word's numerical representation will not be affected by the words in the hidden context. 
+
+48. When should I use a decoder ?
+
+Like encoders, decoders can be used as a standalone models. As they generate a numerical representation, they can also be used in a wide variety of tasks.
+However the strength of a decoder lies in a way a word has access to its left context and so they are inherently good at text generation: the ability to generate a word, or a sequence of words given a known sequence of words, In NLP, it is known as Causal Language Modelling or Natural Language Generation.
+
+So, we could use in:
+
+-- Uni-directional : access to left(or right) context
+-- Great at causal tasks; generate sequences
+-- NLG: Natural Language Generation
+-- Examples of decoders: GPT-2, GPT Neo
+
+Representatives of this family of models include:
+
+CTRL
+GPT
+GPT-2
+Transformer XL
+
+
+My --> Name
+My Name --> is
+My name is --> Sylvain
+My name is Sylvain --> .
+
+-- This is auto-regressive aspect. Auto-regressive models re-use their past outputs as inputs in the following steps. These models are often called auto-regressive models.
+
+    
+Starting from a single word, we've now generated a full sentence. We decide to stop here, but we could continue for a while. For example, GPT-2 has
+the maximum context size of 1024. 
+
+49. Sequence-to-sequence models:
+
+Here, we see the encoder-decoder architecture. An example of a popular encoder-decoder model is T5. To understand it, first we need to understand encoders and decoders as standalone models. The encoder takes words as inputs, casts them through encoders, and retrieves a numerical representation for each word, castes through it. We now know that the numerical representation holds information about the meaning of the sequence. Now, add the decoder. In this scenario, we are using the decoder in a manner that we have not seen before. We are passing the outputs of the encoder directly to it. Additionally to
+the encoder outputs, we also give the decoder a sequence. When prompting the decoder for an output with no initial sequence, we can give it the value that
+indicates the start of the sequence and that's where encoder-decoder magic happens. The encoder accepts a sequence as input, it computes a prediction and outputs a numerical representation. Then it sends over to the decoder. It has, in a sense, that it encoded the sequence. And the decoder, in turn, using this input alongside its usual input sequence input, will take a stab at decoding the sequence. 
+
+The decoder decodes the sequence and outputs a word. As of now, we don't need to make sense of that word but we can understand that the decoder is essentially decoding what encoder has output. Now we have the generated word from the encoder, we don't need encoder anymore. As we have seen before, decoder can act as auto-regressive manner. The word it has outputs , can now be used as an input. We continue it until we deciding a value to stop it like a full stop as end of the sequence. 
+
+50. Let's see a concrete example: with Translation Language Modelling, also called transduction, it's the act of translating a sequence. Here we would like to translate English sentence "Welcome to NYC" to French. We are using a transformer model which is trained for this task explicitly. We use the encoder to create a numerical representation of the English sentence. We cast it to decoder and with the use of the start of the sequence word, we ask it to output the first word. So, now decoder outputs "Bienvenue" which means Welcome. We then use "Bienvenue" as the input sequence for the decoder. This, alongside the feature vector, allows the decoder to predict the second word "a" which is "to" in English. Finally, we ask the decoder to predict a third word, it predicts
+"NYC" which is correct. So, we have translated the sentence. Here, encoder-decoder shines and they don't share weights. Encoder is trained to understand the  sequence and extract the relevant information. Here, it means parsing and understanding what was said in English language. It means extracting information from the language and putting all of that in a vector dense in information. On the other hand, we have decoder whose sole purpose is to decode the future output(numerical representation) by encoder. This decoder can be specialized in a completely different language or even modality like images or speech.
+
+51.
+
+Encoders and Decoders are special for several reasons:
+
+-- Sequence to sequence tasks; many to many translation, summarization
+
+-- Weights are not necessary shared across the encoder and decoder
+
+-- Input distribution is different from output distribution.
+
+These models are able to manage sequence-to-sequence tasks like translation which we have seen.           
+
+Secondly, the weights between the encoders and decoders parts are not necessarily shared. 
+
+52.
+
+Another example of translation:
+
+Transformers are powerful (english) ---> Les transformers sont puissants (french)
+
+Here, sequence of 3 words are translated to sequence of 4 words. One could argue that this could be handled with a decoder that would generate a translation in an auto-regressive manner and that would be right. 
+
+53. 
+
+Another example where sequence-to-sequence model where transformers shine is text summarization. Since encoders and decoders are separate, we can have different context lengths (for example a very long context for the encoder which handles the text and a small context for the decoder which handles the summarized sequence).
+
+There are lots of sequence to sequence models in the Transformers library:
+
+A. BART
+B. ProphetNet
+C. mT5
+D. M2M100
+E. T5
+F. Pegasus
+G. MarianMT
+H. mBART etc.
+
+Additionally, you can load an encoder and a decoder inside an encoder-decoder model. Therefore, according to the specific task you are targeting, you may choose to specific encoders and decoders which have proven their worth on these specific tasks. 
+
+54.
+
+Encoder-decoder models (also called sequence-to-sequence models) use both parts of the Transformer architecture. At each stage, the attention layers of the encoder can access all the words in the initial sentence, whereas the attention layers of the decoder can only access the words positioned before a given word in the input.
+
+The pretraining of these models can be done using the objectives of encoder or decoder models, but usually involves something a bit more complex. For instance, T5 is pretrained by replacing random spans of text (that can contain several words) with a single mask special word, and the objective is then to predict the text that this mask word replaces.
+
+Sequence-to-sequence models are best suited for tasks revolving around generating new sentences depending on a given input, such as summarization, translation, or generative question answering.
+
+Representatives of this family of models include:
+
+BART
+mBART
+Marian
+T5
+
+55.  Bias and limitations:
+
+
+
+
+
+
+
+         
